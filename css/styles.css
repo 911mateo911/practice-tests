@@ -29,3 +29,22 @@ body {
 a {
   font-family: 'Coda Caption', sans-serif;
 }
+
+.content {
+  visibility: hidden;
+  background-color: yellow;
+  padding: 10px;
+  position: absolute;
+}
+
+.wrapper:hover .content{
+  visibility: visible;
+  position: relative;
+}
+
+content::before {
+  content: ""
+  border-style: solid;
+  border-width: 1px;
+
+}
