@@ -1,0 +1,31 @@
+.lol {
+  background-color: #E7E7E7;
+  margin: 8px;
+}
+
+body {
+  background-color: #F9C784 !important;
+}
+
+.card {
+  margin: 10px;
+  background-color: #E7E7E7;
+  box-shadow: 2px 2px 2px grey;
+}
+
+.card-img-top:hover {
+  box-shadow: 2px 2px 2px grey;
+}
+
+.btnkot {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+a {
+  font-family: 'Coda Caption', sans-serif;
+}
