@@ -1,0 +1,427 @@
+<?php
+    session_start();
+    if($_SESSION['adminLoggedIn']) 
+        header("Location:AdminPage.php");
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap" rel="stylesheet">
+    <script type="text/javascript">
+    var number;
+
+function studentSignIn(){
+    var email=document.getElementById("studentEmail");
+    var password=document.getElementById("studentPassword");
+    var wrongStudent=document.getElementById("wrongStudent");
+    var temp=1;
+    if(email.value==""){
+        email.setAttribute("style","border-color:red");
+        temp=0;
+    }
+    if(password.value==""){
+        password.setAttribute("style","border-color:red");
+        temp=0;
+    }
+    if(temp==1){
+        $.post("studentLogIn.php",{
+            email:email.value,
+            password:password.value
+        }, function(response){
+            if(response=="false"){
+                wrongStudent.setAttribute("style","display:block;");
+            }
+            else{
+                location.href="StudentPage.php";
+            }
+        })
+    }
+}
+
+function adminSignIn(){
+    var email=document.getElementById("adminEmail");
+    var password=document.getElementById("adminPassword");
+    var wrongAdmin=document.getElementById("wrongAdmin");
+    var temp=1;
+    if(email.value==""){
+        email.setAttribute("style","border-color:red");
+        temp=0;
+    }
+    if(password.value==""){
+        password.setAttribute("style","border-color:red");
+        temp=0;
+    }
+    if(temp==1){
+        $.post("data.php",{
+            email:email.value,
+            password:password.value
+        },function(response){
+            if(response=="false"){
+                wrongAdmin.setAttribute("style","display:block");
+            }
+            else{
+                location.href="AdminPage.php";
+            }
+        })
+    }
+}
+
+function showAlert(){
+    var alertDialog=document.getElementById("alertDialog");
+    alertDialog.showModal();
+}
+
+function signUpClicked(){
+    var email=document.getElementById("email");
+    var password=document.getElementById("password");
+    var confirmPassword=document.getElementById("confirmPassword");
+    var emailSent=document.getElementById("emailSent");
+    var confirm=document.getElementById("confirm")
+    var temp=1;
+    if(email.value===""){
+        email.setAttribute("style","border-color:red");
+        temp=0;
+    }
+    if(password.value===""){
+        password.setAttribute("style","border-color:red");
+        temp=0;
+    }
+    if(confirmPassword.value===""){
+        confirmPassword.setAttribute("style","border-color:red");
+        temp=0;
+    }
+    if(temp==1){
+        if(password.value!=confirmPassword.value){
+            window.alert("Fjalekalimi nuk eshte i njejte.");
+            return;
+        }
+        emailSent.setAttribute("style","display:block;");
+        confirm.setAttribute("style","display:block;");
+        number=Math.floor(Math.random()*10)+""+Math.floor(Math.random()*10)+""+Math.floor(Math.random()*10)+""+Math.floor(Math.random()*10)+""+Math.floor(Math.random()*10)+""+Math.floor(Math.random()*10);
+        $.post("sendemail.php",{
+            email:email.value,
+            number:number
+        });
+    }
+}
+
+function confirmEmail(){
+    var verificationCode=document.getElementById("verificationCode");
+    if(verificationCode.value==number){
+        var email=document.getElementById("email");
+        var password=document.getElementById("password");
+        $.post("createAccount.php",{
+            email:email.value,
+            password:password.value
+        },function(response){
+            if(response=="true"){
+                window.alert("Ju u rregjistruat me sukses.");
+            }
+            else{
+                window.alert("Ky email eshte i rregjistruar. Provoni nje email tjeter.");
+            }
+        });
+    }
+}
+
+
+    </script>
+    <script src="https://kit.fontawesome.com/f9edb8337c.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style type="text/css">
+    body{
+    background-color:#F1F1F1;
+}
+header{
+    position:absolute;
+    top:0px;
+    left:0px;
+    right:0px;
+    height:20%;
+    background-color:#1C9D5D;
+    display:flex;
+    justify-content:center;
+}
+h1{
+    font-family: 'Ubuntu', sans-serif;
+}
+img{
+    height:100%;
+}
+h4{
+    color:#FEFEFE;
+    font-family: 'Ubuntu', sans-serif;
+}
+main{
+    position:absolute;
+    top:20%;
+    left:0px;
+    right:0px;
+    height:80%;
+}
+section{
+    width:50%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    float:left;
+}
+aside{
+    width:50%;
+    height:100%;
+    float:right;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.mainDiv{
+    background-color:#FFFFFF;
+    height:fit-content;
+    width:fit-content;
+    text-align:center;
+    border-radius:10px;
+}
+.webTitle{
+    color:#3DCF86;
+    font-size:1.2em;
+    margin-bottom:40px;
+    margin-top:-10px;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight:bold;
+}
+label{
+    font-weight:bold;
+    font-family: 'Ubuntu', sans-serif;
+}
+main  div{
+     padding:30px 100px 30px 100px;
+}
+h2{
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.button{
+   background-color:#FFFFFF;
+   border-color:#3DCF86;
+   border-style:solid;
+   border-radius:5px;
+   color:#3DCF86;
+   padding:5px 10px 5px 10px;
+   font-family: 'Ubuntu', sans-serif;
+   margin-left:15px;
+}
+.editText{
+   border-color:#3DCF86;
+   border-style:solid;
+   border-radius:5px;
+   color:#3DCF86;
+   padding:5px 10px 5px 10px;
+   font-family: 'Ubuntu', sans-serif;
+   margin-left:15px;
+}
+.signIn{
+    background-color:#3DCF86;
+    border-style:solid;
+    border-radius:5px;
+    border-color:#3DCF86;
+    color:#FFFFFF;
+    font-family: 'Ubuntu', sans-serif;
+    padding:5px 10px 5px 10px;
+}
+.signIn:hover{
+    padding:10px;
+}
+.button:hover {
+    background-color:#3DCF86;
+    color:#FFFFFF;
+    padding:10px;
+}
+.editText:hover{
+    padding:10px
+}
+.formParagraphs{
+    text-align:right;
+}
+#alertDialog{
+    text-align:center;
+    font-family: 'Ubuntu', sans-serif;
+    width:fit-content;
+    height:fit-content;
+    background-color:#FFFFFF;
+    padding:40px;
+    border-radius:10px;
+    border-color:#FFFFFF;
+}
+button{
+    float:right;
+    color:#3DCF86;
+    background-color:#FFFFFF;
+    outline:none;
+    border:none;
+    font-size:20px;
+}
+button:hover{
+    font-size:25px;
+}
+input:focus{
+    outline-color:#00A400;
+}
+#verificationCode{
+    text-align:center;
+}
+#emailSent{
+    display:none;
+}
+.wrongInputs{
+    color:red;
+    font-family: 'Ubuntu', sans-serif;
+    display:none;
+}
+
+@media (min-width:750px) and (max-width:1000px){
+    h1{
+        font-size:28px;
+    }
+    h2,.webTitle{
+        font-size:20px;
+    }
+    main div{
+        padding:10px 30px 10px 30px;
+    }
+}
+
+@media (max-width:749px){
+    body{
+        display:flex;
+        flex-direction:column;
+        box-sizing:border-box;
+    }
+    header{
+        position:absolute;
+        top:0px;
+        left:0px;
+        right:0px;
+        height:100px;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
+    img{
+        height:80px;
+        text-align:center;
+    }
+    h1,h2{
+        font-size:17px;
+    }
+    h4{
+        font-size:9px;
+    }
+    main{
+        position:absolute;
+        top:100px;
+        left:0px;
+        right:0px;
+        height:fit-content;
+        padding-left:20px;
+        padding-right:20px;
+        padding-top:20px;
+        box-sizing:border-box;
+    }
+    section{
+        width:100%;
+        height:fit-content;
+        display:flex;
+        justify-content:center;
+        box-sizing:border-box;
+    }
+    aside{
+        margin-top:20px;
+        width:100%;
+        height:fit-content;
+        display:flex;
+        justify-content:center;
+        box-sizing:border-box;
+    }
+    .mainDiv{
+        width:100%;
+    }
+    main div{
+        padding:20px;
+    }
+    .webTitle{
+        font-size:15px;
+    }
+    .formParagraphs{
+        font-size:0.9em;
+    }
+}
+    </style>
+</head>
+<body>
+    <header>
+        <img src="upt.png">
+        <div>
+            <h1>Sistem i menaxhimit te studenteve</h1>
+            <h4>Bul. “Dëshmorët e Kombit” Sheshi “Nënë Tereza”, Nr. 4, Tiranë</h4>
+            <h4>Tel: +355 4 227 81 59</h4>
+        </div>
+    </header>
+    <main>
+        <section>
+            <div class="mainDiv">
+                <h2>Rregjistrohu si student</h2>
+                <p class="webTitle">Sistem i menaxhimit te studenteve</p>
+                <form>
+                    <p class="wrongInputs" id="wrongStudent">Email-i ose fjalekalimi qe ju vendoset nuk i perket<br>asnje adrese.</p>
+                    <p class="formParagraphs">
+                        <label>Email <input type="text" placeholder="Email" class="editText" id="studentEmail"></label>
+                    </p>
+                    <p class="formParagraphs">
+                        <label>Fjalekalimi <input type="text" placeholder="Fjalekalimi" class="editText" id="studentPassword"></label>
+                    </p>
+                    <p class="formParagraphs"><input type="button" value="Hyr" class="signIn" onclick="studentSignIn()"></p>
+                    <p class="formParagraphs"><input type="button" value="Krijo nje adrese" class="signIn" id="createNewAccount" onclick="showAlert()"></p>
+                </form>
+            </div>
+        </section>
+        <aside>
+            <div class="mainDiv">
+                <h2>Rregjistrohu si admin</h2>
+                <p class="webTitle">Sistem i menaxhimit te studenteve</p>
+                <form>
+                    <p class="wrongInputs" id="wrongAdmin">Email-i ose fjalekalimi qe ju vendoset nuk i perket<br>asnje adrese.</p>
+                    <p class="formParagraphs">
+                        <label>Email <input type="text" placeholder="Email" class="editText" id="adminEmail"></label>
+                    </p>
+                    <p class="formParagraphs">
+                        <label>Fjalekalimi <input type="password" placeholder="Fjalekalimi" class="editText" id="adminPassword"></label>
+                    </p>
+                    <p class="formParagraphs"><input type="button" value="Hyr" class="signIn" onclick="adminSignIn()"></p>
+                </form>
+            </div>
+        </aside>
+        <dialog id="alertDialog">
+            <form>
+                <button><i class="fas fa-times-circle"></i></button>
+                <h1>Krijo nje adrese</h1>
+                <h5>Eshte e thjeshte dhe shpejte</h5> 
+                <p><input type="text" placeholder="Email" class="editText" id="email"></p>
+                <p>
+                    <input type="password" placeholder="Fjalekalimi" class="editText" id="password">
+                </p>
+                <p>
+                    <input type="password" placeholder="Konfirmo Fjalekalimin" class="editText" id="confirmPassword">
+                </p>
+                <p><input type="button" value="Krijo" class="signIn" id="signUp" onclick="signUpClicked()"></p>
+                <p id="emailSent">Nje email u dergua ne adresen tuaj:  <input type="number" placeholder="######" class="editText" id="verificationCode"></p>
+                <p id="confirm" style="display:none;"><input type="button" value="Konfirmo" onclick="confirmEmail()" class="signIn"></p>
+            </form>
+        </dialog>
+    </main>
+</body>
+</html>
